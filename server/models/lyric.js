@@ -10,14 +10,21 @@ const LyricSchema = new Schema({
   content: { type: String }
 });
 
-LyricSchema.statics.like = function(id) {
+LyricSchema.statics.like = function (id) {
   const Lyric = mongoose.model('lyric');
 
-  return Lyric.findById(id)
-    .then(lyric => {
-      ++lyric.likes;
-      return lyric.save();
-    })
-}
+  return Lyric.findById(id).then((lyric) => {
+    ++lyric.likes;
+    return lyric.save();
+  });
+};
+LyricSchema.statics.updateContents = function (id, content) {
+  const Lyric = mongoose.model('lyric');
+
+  return Lyric.findById(id).then((lyric) => {
+    lyric.content = content;
+    return lyric.save();
+  });
+};
 
 mongoose.model('lyric', LyricSchema);

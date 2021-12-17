@@ -15,7 +15,7 @@ const mutation = new GraphQLObjectType({
         title: { type: GraphQLString }
       },
       resolve(parentValue, { title }) {
-        return (new Song({ title })).save()
+        return new Song({ title }).save();
       }
     },
     addLyricToSong: {
@@ -33,6 +33,23 @@ const mutation = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parentValue, { id }) {
         return Lyric.like(id);
+      }
+    },
+    updateLyric: {
+      type: LyricType,
+      args: {
+        content: { type: GraphQLString },
+        id: { type: GraphQLID }
+      },
+      resolve(parent, { id, content }) {
+        return Lyric.updateContents(id, content);
+      }
+    },
+    deleteLyric: {
+      type: LyricType,
+      args: { id: { type: GraphQLID } },
+      resolve(parentValue, { id }) {
+        return Lyric.remove({ _id: id });
       }
     },
     deleteSong: {
